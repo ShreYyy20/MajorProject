@@ -1,20 +1,20 @@
 import threading
 import webbrowser
-from tkinter import Tk, Button, Label, Entry, messagebox, filedialog
+from tkinter import Tk, ttk, Label, Entry, messagebox, filedialog
+from tkinter.font import Font
 from PIL import Image
 from pathlib import Path
-from tkinter import ttk
 from transformers import pipeline
 import nltk
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
+
 captions_file = Path("captions.txt")
 initialized = False
 
 def initialize():
     global initialized
     if not initialized:
-        
         global stopwords, lemmatizer, pipe
         stopwords = set(stopwords.words('english'))
         lemmatizer = WordNetLemmatizer()
@@ -62,39 +62,21 @@ def search_captions(query):
                 matched_images.append(image_path)
     return matched_images
 
-def select_images():
-    root = Tk()
-    root.attributes("-topmost", True)
-    root.focus_set()
-    root.title("Select Images")
-    root.configure(bg="#08026c")
-    
+def select_images(frame):
     def select():
         image_files = filedialog.askopenfilenames(title="Select Images", filetypes=[("Image Files", "*")])
         image_paths = [str(image_file) for image_file in image_files]
         if image_paths:
             generate_captions(image_paths)
             messagebox.showinfo("Information", "Captions generated for selected images.")
-        root.destroy()
     
-    label = Label(root, text="Click below to select images:", font=("Trebuchet MS", 24), bg="#08026c",foreground="yellow")
-    label.pack(pady=10)
+    label = Label(frame, text="Click below to select images:", font=("Arial", 16, "bold"), bg="#08026c", fg="goldenrod")
+    label.pack(pady=20)
     
-    button_style = ttk.Style()
-    button_style.configure("TButton", font=("Trebuchet MS", 24), background="#4CA", foreground="yellow", padx=10, pady=5)
-    
-    button = ttk.Button(root, text="Select Images", command=select)
-    button.pack(pady=10)
-    
-    root.mainloop()
+    button = ttk.Button(frame, text="Select Images", command=select, style="Custom.TButton")
+    button.pack(pady=20)
 
-def search_query():
-    root = Tk()
-    root.attributes("-topmost", True)
-    root.focus_set()
-    root.title("Search Query")
-    root.configure(bg="#08026c")
-    
+def search_query(frame):
     def search():
         query = entry.get()
         matches = search_captions(query)
@@ -103,21 +85,15 @@ def search_query():
                 webbrowser.open(image_path)
         else:
             messagebox.showinfo("Information", "No matching images found.")
-        root.destroy()
     
-    label = Label(root, text="Enter search query:", font=("Trebuchet MS", 24), bg="#08026c", foreground="yellow")
-    label.pack(pady=10)
-    
-    entry_style = ttk.Style()
-    entry_style.configure("TEntry", font=("Trebuchet MS", 24), padx=10, pady=5)
-    
-    entry = Entry(root, font=("Trebuchet MS", 24))
-    entry.pack(pady=10)
-    
-    button = ttk.Button(root, text="Search", command=search)
-    button.pack(pady=10)
-    
-    root.mainloop()
+    label = Label(frame, text="Enter search query:", font=("Arial", 16, "bold"), bg="#08026c", fg="goldenrod")
+    label.pack(pady=20)
+
+    entry = Entry(frame, font=("Arial", 14))
+    entry.pack(pady=20)
+
+    button = ttk.Button(frame, text="Search", command=search, style="Custom.TButton")
+    button.pack(pady=20)
 
 if __name__ == "__main__":
     # Initialize the resources in a separate thread
@@ -127,6 +103,38 @@ if __name__ == "__main__":
     # Wait for the initialization thread to complete
     thread.join()
     
-    # Run the GUI
-    select_images()
-    search_query()
+    # Create main window
+    root = Tk()
+    root.state("zoomed")
+    root.resizable(True, True)
+    root.attributes("-topmost", True)
+    root.title(" Image Retriever")
+    root.geometry("600x600")
+    root.configure(bg="#08026c")
+    
+    # Define a custom style for buttons with darker blue color
+    button_style = ttk.Style()
+    button_style.configure("Custom.TButton", font=("Arial", 14), background="#062a78", foreground="goldenrod", relief="groove", hovercolor="#3d8d")
+    button_style.configure("Custom.TButton", font=("Arial", 14,),background="#062a78", foreground="goldenrod", relief="flat",hover_color="#0d8d")
+    
+    # Create notebook
+    notebook = ttk.Notebook(root)
+    notebook.pack(fill="both", expand=True)
+    
+    # Define a custom style for frames with the desired background color
+    frame_style = ttk.Style()
+    frame_style.configure("Custom.TFrame", background="#08026c")
+    
+    # Create frames for each page
+    select_frame = ttk.Frame(notebook, style="Custom.TFrame")
+    search_frame = ttk.Frame(notebook, style="Custom.TFrame")
+    
+    # Add frames to notebook
+    notebook.add(select_frame, text="Select Images")
+    notebook.add(search_frame, text="Search Query")
+    
+    # Populate frames with content
+    select_images(select_frame)
+    search_query(search_frame)
+    
+    root.mainloop()
