@@ -64,6 +64,8 @@ def search_captions(query):
 
 def select_images():
     root = Tk()
+    root.attributes("-topmost", True)
+    root.focus_set()
     root.title("Select Images")
     root.configure(bg="#08026c")
     
@@ -75,11 +77,11 @@ def select_images():
             messagebox.showinfo("Information", "Captions generated for selected images.")
         root.destroy()
     
-    label = Label(root, text="Click below to select images:", font=("Trebuchet MS", 12), bg="#08026c")
+    label = Label(root, text="Click below to select images:", font=("Trebuchet MS", 24), bg="#08026c",foreground="yellow")
     label.pack(pady=10)
     
     button_style = ttk.Style()
-    button_style.configure("TButton", font=("Trebuchet MS", 12), background="#4CA", foreground="yellow", padx=10, pady=5)
+    button_style.configure("TButton", font=("Trebuchet MS", 24), background="#4CA", foreground="yellow", padx=10, pady=5)
     
     button = ttk.Button(root, text="Select Images", command=select)
     button.pack(pady=10)
@@ -103,13 +105,13 @@ def search_query():
             messagebox.showinfo("Information", "No matching images found.")
         root.destroy()
     
-    label = Label(root, text="Enter search query:", font=("Trebuchet MS", 12), bg="#08026c", foreground="yellow")
+    label = Label(root, text="Enter search query:", font=("Trebuchet MS", 24), bg="#08026c", foreground="yellow")
     label.pack(pady=10)
     
     entry_style = ttk.Style()
-    entry_style.configure("TEntry", font=("Trebuchet MS", 12), padx=10, pady=5)
+    entry_style.configure("TEntry", font=("Trebuchet MS", 24), padx=10, pady=5)
     
-    entry = Entry(root, font=("Trebuchet MS", 12))
+    entry = Entry(root, font=("Trebuchet MS", 24))
     entry.pack(pady=10)
     
     button = ttk.Button(root, text="Search", command=search)
