@@ -4,6 +4,8 @@ from tkinter import Tk, ttk, Label, Entry, messagebox, filedialog
 from tkinter.font import Font
 from PIL import Image
 from pathlib import Path
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 from transformers import pipeline
 import nltk
 from nltk.corpus import stopwords
@@ -82,7 +84,8 @@ def search_query(frame):
         matches = search_captions(query)
         if matches:
             for image_path in matches:
-                webbrowser.open(image_path)
+                image = Image.open(image_path)
+                image.show()
         else:
             messagebox.showinfo("Information", "No matching images found.")
     
@@ -107,7 +110,6 @@ if __name__ == "__main__":
     root = Tk()
     root.state("zoomed")
     root.resizable(True, True)
-    root.attributes("-topmost", True)
     root.title(" Image Retriever")
     root.geometry("600x600")
     root.configure(bg="#08026c")
