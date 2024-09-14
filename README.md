@@ -1,5 +1,3 @@
----
-
 # Image Captioning and Retrieval Application
 
 This project is a GUI-based application that allows users to generate captions for selected images using a pre-trained image-to-text model. Users can search through generated captions and retrieve matching images based on text queries.
