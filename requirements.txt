@@ -1,9 +1,6 @@
 absl-py==2.1.0
 annotated-types==0.6.0
 astunparse==1.6.3
-azfuse==0.1
-azure-core==1.30.0
-azure-storage-blob==12.19.0
 blis==0.7.11
 catalogue==2.0.10
 certifi==2024.2.2
