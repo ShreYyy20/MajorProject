@@ -45,6 +45,7 @@ Make sure you have the following installed:
     ```bash
     pip install -r requirements.txt
     ```
+    > Recommendation: Consider using a virtual environment for better package management.
 
 3. **Download NLTK resources:**
     The application uses NLTK's stopwords and lemmatizer. Run the following in a Python shell to download the necessary resources:
